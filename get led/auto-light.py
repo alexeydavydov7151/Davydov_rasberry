@@ -1,24 +1,16 @@
 import RPi.GPIO as GPIO
 import time
-
-# Настройка пинов
 GPIO.setmode(GPIO.BCM)
-led_pin = 5
+led_pin = 26
 sensor_pin = 6
-
-# Настройка входа/выхода
 GPIO.setup(led_pin, GPIO.OUT)
 GPIO.setup(sensor_pin, GPIO.IN)
-
-# Бесконечный цикл
 while True:
     # Читаем состояние фототранзистора
     sensor_state = GPIO.input(sensor_pin)
-    
-    # Включаем светодиод наоборот
     if sensor_state == 1:
-        GPIO.output(led_pin, 0)  # выключить
+        GPIO.output(led_pin, 0) 
     else:
-        GPIO.output(led_pin, 1)  # включить
+        GPIO.output(led_pin, 1) 
     
     time.sleep(0.1)
