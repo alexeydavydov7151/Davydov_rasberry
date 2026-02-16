@@ -1,8 +1,8 @@
 import RPi.GPIO as GPIO
-dac_bits = [10, 9, 11, 5, 6, 13, 19, 26]
+dac_bits = [16,20,21,25,26,17,27,22]
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(dac_bits, GPIO.OUT)
-dynamic_range = 3.3
+dynamic_range = 3.148
 def voltage_to_number(voltage):
     if not (0.0 <= voltage <= dynamic_range):
         print(f"Напряжение выходит за динамический диапазон ЦАП (0.00 ~ {dynamic_range:.2f} В)")
@@ -10,8 +10,11 @@ def voltage_to_number(voltage):
         return 0
     return int(voltage / dynamic_range * 255)
 def number_to_dac(value):
-    binary = [int(bit) for bit in format(value, '08b')]
-    GPIO.output(dac_bits, binary)
+    bin_value = bin(value)[2:].zfill(8)
+    print(f"НА на цап подается число :{bin_value}")
+    for i in range (8):
+        GPIO.output(dac_bits[i],int(bin_value[i]))
+
 try:
     while True:
         try:

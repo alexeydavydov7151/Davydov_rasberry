@@ -7,18 +7,15 @@ class R2R_DAC:
         self.verbose = verbose
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.gpio_bits, GPIO.OUT, initial=0)
-    
     def deinit(self):
         GPIO.output(self.gpio_bits, 0)
         GPIO.cleanup()
-    
     def set_number(self, number):
-        for i in range(len(self.gpio_bits)):
-            bit = (number >> i) & 1
-            GPIO.output(self.gpio_bits[i], bit)
+        bin_value = bin(number)[2:].zfill(len(self.gpio_bits))
+        for i in range (len(self.gpio_bits)):
+            GPIO.output(self.gpio_bits[i],int(bin_value[i]))
         if self.verbose:
             print(f"Установлено число: {number}")
-    
     def set_voltage(self, voltage):
         max_number = 2**len(self.gpio_bits) - 1
         number = int(voltage * max_number / self.dynamic_range)
@@ -30,7 +27,7 @@ class R2R_DAC:
 if __name__ == "__main__":
     dac = None
     try:
-        dac = R2R_DAC([16, 20, 21, 25, 26, 17, 27, 22], 3.183, True)
+        dac = R2R_DAC([16, 20, 21, 25, 26, 17, 27, 22], 3.149, True)
         while True:
             try:
                 voltage = float(input("Введите напряжение в Вольтах: "))
