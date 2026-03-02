@@ -1,12 +1,13 @@
-import smbus 
+import smbus
 class MCP4725:
     def __init__(self,dynamic_range,address = 0x61, verbose = True):
-        self.bus = smbus.SMbus(1)
+        self.bus = smbus.SMBus(1)
         self.adress = address
         self.wm = 0x00
         self.pds = 0x00
         self.verbose = verbose
         self.dynamic_range = dynamic_range
+        self.max_number=4095
     def deinit(self):
         self.bus.close()
     def set_number(self,number):
@@ -19,16 +20,16 @@ class MCP4725:
         self.bus.write_byte_data(0x61,first_byte, second_byte)
 
         if self.verbose:
-            print(f"Число: {number},отправленные по I2c данные [0x{(self.adress<<1):02X},0x{first_byte:02X}, 0x{second_byte:02X}\n")
+            print(f"Число: {number},отправленные по I2c данные [0x{(self.adress<<1):02X},0x{first_byte:02X}, 0x{second_byte:02X}]\n")
     def set_voltage(self, voltage):
-        max_number = 2**len(self.gpio_bits) - 1
-        number = int(voltage * max_number / self.dynamic_range)
-        number = max(0, min(number, max_number))
+        number = int(voltage * self.max_number / self.dynamic_range)
+        number = max(0, min(number, self.max_number))
         self.set_number(number)
 if __name__=="__main__":
-    dac=MCP4725(dynamic_range = 3.3,address=0x61,verbose=True)
+    dac=MCP4725(dynamic_range = 5,address=0x61,verbose=True)
     try:
-        dec.set_voltage(3.3)
+        voltage =float (input("Введите число:"))
+        dac.set_voltage(voltage)
     finally:
         dac.deinit()
 
