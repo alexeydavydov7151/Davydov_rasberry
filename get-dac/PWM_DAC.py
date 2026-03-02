@@ -30,7 +30,7 @@ class PWM_DAC:
             print(f"Установлено напряжение: {voltage:.3f} В")
 if __name__ == "__main__":
     try:
-        dac = PWM_DAC(12, 100, 3.290, True)
+        dac = PWM_DAC(12, 400, 3.290, True)
         while True:
             try:
                 voltage = float(input("Введите напряжение в Вольтах: "))
