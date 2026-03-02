@@ -4,7 +4,7 @@ class R2R_ADC:
     def __init__(self, dynamic_range, compare_time = 0.01, verbose = False):
         self.dynamic_range = dynamic_range
         self.verbose = verbose
-        self.comare_time = compare_time 
+        self.compare_time = compare_time 
 
         self.bits_gpio = [26, 20, 19, 16, 13, 12, 25, 11]
         self.comp_gpio = 21
@@ -43,10 +43,11 @@ class R2R_ADC:
 
 if __name__ == "__main__":
     try:
-        adc = R2R_ADC(3.183,0.01,True)
+        adc = R2R_ADC(3.183,1,True)
         while True:
             voltage = adc.sequential_counting_adc()
             print(voltage)
+            time.sleep(1)
 
-    finally:
+    finally:  
         adc.deinit()
