@@ -1,6 +1,6 @@
 import time
 from adc_plot import plot_voltage_vs_time
-from r2r_adc import R2R_ADC 
+from r2r_8 import R2R_ADC 
 
 DYNAMIC_RANGE = 3.21
 COMPARE_TIME = 0.001 
