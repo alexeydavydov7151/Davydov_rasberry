@@ -6,10 +6,11 @@ class R2R_ADC:
         self.dynamic_range = dynamic_range
         self.verbose = verbose
         self.compare_time = compare_time
-
         self.bits_gpio = [26, 20, 19, 16, 13, 12, 25, 11]
         self.comp_gpio = 21
-
+        self.num_bits = len(self.bits_gpio)
+        self.lsb = dynamic_range / (2**self.num_bits)
+        
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.bits_gpio, GPIO.OUT, initial = 0)
         GPIO.setup(self.comp_gpio, GPIO.IN)
@@ -29,7 +30,6 @@ class R2R_ADC:
             comp_value = GPIO.input(self.comp_gpio)
             if comp_value == 1:
                 return code
-                
         return 255
 
     def code_to_voltage(self, code):
@@ -39,34 +39,32 @@ class R2R_ADC:
         code = self.sequential_counting_adc()
         voltage = self.code_to_voltage(code)
         return voltage
+        
     def successive_approximation_adc(self):
         value = 0
         for bit in range(self.num_bits - 1, -1, -1):
             value |= (1 << bit)
-            self._set_output(value)
+            self.number_to_dac(value)
             time.sleep(self.compare_time)
-            if GPIO.input(4) == GPIO.LOW:
+            comp_value = GPIO.input(self.comp_gpio)
+            if comp_value == 0:
                 value &= ~(1 << bit)
         return value
-    
 
     def get_sar_voltage(self):
         digital_value = self.successive_approximation_adc()
         return digital_value * self.lsb
 
-
 if __name__ == "__main__":
     DYNAMIC_RANGE_V = 3.21
-
     adc = None
 
     try:
         adc = R2R_ADC(dynamic_range = DYNAMIC_RANGE_V, compare_time=0.01, verbose=True)
-
-
         while True:
-            voltage = adc.get_sc_voltage()
-            print(voltage)
+            voltage = adc.get_sar_voltage()
+            print(f"{voltage:.3f} В")
+            time.sleep(0.1)
 
     finally:
         if adc:
