@@ -58,7 +58,6 @@ class R2R_ADC:
 if __name__ == "__main__":
     DYNAMIC_RANGE_V = 3.21
     adc = None
-
     try:
         adc = R2R_ADC(dynamic_range = DYNAMIC_RANGE_V, compare_time=0.01, verbose=True)
         while True:
