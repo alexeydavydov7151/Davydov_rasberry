@@ -37,17 +37,16 @@ class R2R_ADC:
                 return (voltage)
 
     def det_sc_voltage(self):
-        vlt = self.sequential_counting_adc(self)
+        vlt = self.sequential_counting_adc()
         return (vlt)
         
 
 if __name__ == "__main__":
     try:
-        adc = R2R_ADC(3.183,1,True)
+        adc = R2R_ADC(3.183,0.01,True)
         while True:
             voltage = adc.sequential_counting_adc()
             print(voltage)
-            time.sleep(1)
 
-    finally:  
+    finally:
         adc.deinit()
