@@ -7,10 +7,7 @@ def plot_voltage_vs_time(time, voltage, max_voltage):
     plt.ylabel("Напряжение, в", fontsize=12)
     plt.legend()
     plt.show()
-    def plot_sampling_period_hist(time):
-    """
-    Строит гистограмму распределения периодов измерений
-    """
+def plot_sampling_period_hist(time):
     # 2. Создаем список для хранения промежутков времени
     sampling_periods = []
     

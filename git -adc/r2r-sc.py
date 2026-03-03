@@ -1,5 +1,6 @@
 import time
 from adc_plot import plot_voltage_vs_time
+from adc_plot import plot_sampling_period_hist
 from r2r_8 import R2R_ADC 
 
 DYNAMIC_RANGE = 3.21
@@ -24,6 +25,8 @@ def main():
             time_values.append(current_time)
 
         plot_voltage_vs_time(time_values, voltage_values, DYNAMIC_RANGE)
+        plot_sampling_period_hist(time_values)
+
         
     finally:
         del adc
