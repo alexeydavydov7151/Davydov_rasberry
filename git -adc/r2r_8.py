@@ -39,7 +39,22 @@ class R2R_ADC:
         code = self.sequential_counting_adc()
         voltage = self.code_to_voltage(code)
         return voltage
-        
+    def successive_approximation_adc(self):
+        value = 0
+        for bit in range(self.num_bits - 1, -1, -1):
+            value |= (1 << bit)
+            self._set_output(value)
+            time.sleep(self.compare_time)
+            if GPIO.input(4) == GPIO.LOW:
+                value &= ~(1 << bit)
+        return value
+    
+
+    def get_sar_voltage(self):
+        digital_value = self.successive_approximation_adc()
+        return digital_value * self.lsb
+
+
 if __name__ == "__main__":
     DYNAMIC_RANGE_V = 3.21
 
@@ -47,7 +62,8 @@ if __name__ == "__main__":
 
     try:
         adc = R2R_ADC(dynamic_range = DYNAMIC_RANGE_V, compare_time=0.01, verbose=True)
-        
+
+
         while True:
             voltage = adc.get_sc_voltage()
             print(voltage)
