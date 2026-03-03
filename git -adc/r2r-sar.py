@@ -16,6 +16,6 @@ try:
         times.append(time.time() - start)
     
     plot.plot_voltage_vs_time(times, voltages, 3.3)
-
+    plot.plot_sampling_period_hist(time)
 finally:
     adc_object.clean()
