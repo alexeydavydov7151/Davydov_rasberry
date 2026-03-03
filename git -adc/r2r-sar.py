@@ -1,5 +1,5 @@
 import adc_plot as plot
-import R2R_ADC_module as adc
+import r2r_8 as adc
 import time
 
 adc_object = adc.R2R_ADC(dynamic_range=3.3)
