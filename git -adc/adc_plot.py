@@ -1,14 +1,9 @@
-from matplotlib import pyplot as plt
-def plot_voltage_vs_time(time , voltage, max_voltage):
+import matplotlib.pyplot as plt
+def plot_voltage_vs_time(time, voltage, max_voltage):
     plt.figure(figsize=(10,6))
-    plt.plot(time,voltage)
-    plt.xlabel("Time")
-    plt.ylabel("Voltage")
-    plt.xlim(0,10)
-    plt.ylim(max_voltage)
-    plt.grid(True)
+    plt.plot(time, voltage)
+    plt.title("зависимость напряжения от времени", fontsize=14)
+    plt.xlabel("Время, с", fontsize=12)
+    plt.ylabel("Напряжение, в", fontsize=12)
+    plt.legend()
     plt.show()
-time=list()
-voltage = list()
-
-plot_voltage_vs_time(time, voltage, 3.18)

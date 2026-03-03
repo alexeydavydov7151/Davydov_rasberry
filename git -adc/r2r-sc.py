@@ -1,17 +1,32 @@
-import adc_plot as plot
-import r2r_adc as adc
 import time
+from adc_plot import plot_voltage_vs_time
+from r2r_adc import R2R_ADC 
 
-r2r = adc.R2R_ADC(3.183,0.001,True)
-voltages = list()
-times = list()
-duration = 5
-try:
-    start = time.time()
-    while (time.time()-start) < duration:
-        voltage =r2r.sequential_counting_adc()
-        voltages.append(voltage)
-        times.append(time.time()-start)
-finally:
-    r2r.deinit()
-plot.plot_voltage_vs_time(times,voltages,3.18)
+DYNAMIC_RANGE = 3.21
+COMPARE_TIME = 0.001 
+DURATION = 3.0  
+
+def main():
+    adc = R2R_ADC(dynamic_range=DYNAMIC_RANGE, 
+                  compare_time=COMPARE_TIME, 
+                  verbose=False)
+    
+    voltage_values = []
+    time_values = []
+    
+    try:
+        start_time = time.time()
+        while time.time() - start_time < DURATION:
+            voltage = adc.get_sc_voltage()
+            current_time = time.time() - start_time
+            
+            voltage_values.append(voltage)
+            time_values.append(current_time)
+
+        plot_voltage_vs_time(time_values, voltage_values, DYNAMIC_RANGE)
+        
+    finally:
+        del adc
+
+if __name__ == "__main__":
+    main()
